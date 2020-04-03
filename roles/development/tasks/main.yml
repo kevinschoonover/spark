@@ -1,0 +1,28 @@
+---
+- include: docker.yml
+- include: kvm.yml
+
+- name: Install nodejs + yarn
+  pacman:
+    name:
+      - nodejs
+      - yarn
+    state: present
+
+- name: Install python linters + helpers
+  pip:
+    name:
+      - isort
+      - autopep8
+      - flake8
+      - poetry
+
+- name: install javascript linters + helpers
+  npm:
+    name: "{{ item }}"
+    global: yes
+    state: present
+  with_items:
+    - eslint
+    - tslint
+    - prettier

@@ -1,0 +1,16 @@
+---
+- name: Install bitwarden desktop application
+  aur:
+    name: bitwarden-bin
+    user: "{{ user.name }}"
+  tags:
+    - aur
+
+- name: Install bitwarden cli
+  aur:
+    name:
+      - nvm
+      - bitwarden-cli
+    user: "{{ user.name }}"
+  tags:
+    - aur

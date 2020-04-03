@@ -4,10 +4,10 @@
   tags:
     - aur
 
-- include_tasks: roles/nmtrust/tasks/unit.yml
-  vars:
-      unit: localtime.service
-      run_on: "{{ localtime.run_on }}"
+# - include_tasks: roles/nmtrust/tasks/unit.yml
+#   vars:
+#       unit: localtime.service
+#       run_on: "{{ localtime.run_on }}"
 
 - name: Allow localtimed to access geoclue
   blockinfile:

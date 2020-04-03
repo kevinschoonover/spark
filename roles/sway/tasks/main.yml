@@ -1,0 +1,27 @@
+---
+- name: Install Sway
+  pacman:
+    name: sway
+    state: present
+
+- name: Install lockscreen
+  pacman:
+    name:
+      - swaylock
+      - swayidle
+    state: present
+
+- name: Install waybar
+  aur:
+    name: waybar
+    user: "{{ user.name }}"
+  tags:
+    - aur
+
+- name: Insert/Update starting "sway" in .bashrc
+  blockinfile:
+    path: /home/{{user.name}}/.bashrc
+    block: |
+      if [ "$(tty)" = "/dev/tty1" ]; then
+        exec sway
+      fi

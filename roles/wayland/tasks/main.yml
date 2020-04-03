@@ -1,0 +1,22 @@
+---
+- name: Install Xorg
+  pacman: 
+      name: xorg-server 
+      state: present
+
+- name: Install Xwayland
+  pacman: 
+    name: xorg-server-xwayland 
+    state: present
+
+- name: Install rofi
+  pacman: 
+    name: rofi 
+    state: present
+
+- name: Install video driver(s)
+  pacman: 
+    name: "{{ video_drivers }}"
+    state: present
+
+- include: alacritty.yml

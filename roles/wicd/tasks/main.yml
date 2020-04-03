@@ -1,0 +1,17 @@
+---
+- name: Install wicd and dependencies
+  pacman:
+    name: ['wicd', 'wicd-gtk']
+    state: present
+
+- name: Enable and start wicd
+  service: name=wicd enabled=yes state=started
+
+- name: Add peap-mschap2 configuration
+  copy: src=peap-mschap2 dest=/etc/wicd/encryption/templates/peap-mschap2
+
+- name: Set peap-mschap2 configuration to active
+  lineinfile:
+    path: /etc/wicd/encryption/templates/active
+    regexp: '^peap-mschap2'
+    line: 'peap-mschap2'

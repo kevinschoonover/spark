@@ -1,0 +1,12 @@
+---
+- name: Install discord
+  pacman:
+    name: discord
+    state: present
+
+- name: Install discord-canary
+  aur:
+    name: discord-canary
+    user: "{{ user.name }}"
+  tags:
+    - aur

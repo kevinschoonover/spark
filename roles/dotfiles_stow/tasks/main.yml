@@ -1,0 +1,32 @@
+---
+- name: Install stow
+  pacman:
+    name: stow
+    state: present
+  when: dotfiles is defined
+
+- name: Clone user dotfiles
+  git: 
+      repo: "{{ dotfiles.url }}"
+      dest: /home/{{ user.name }}/{{ dotfiles.destination }} 
+      accept_hostkey: yes
+      update: no
+  when: dotfiles is defined
+  become: yes
+  become_user: "{{ user.name }}"
+
+- name: Install .config dotfiles
+  command: stow {{ item }} -t /home/{{ user.name }}
+  args:
+      chdir: /home/{{ user.name }}/{{ dotfiles.destination }}/
+  when: dotfiles is defined
+  become: yes
+  become_user: "{{ user.name }}"
+  with_items:
+    - alacritty
+    - git
+    - nvim
+    - rofi
+    - sway
+    - tmux
+    - waybar

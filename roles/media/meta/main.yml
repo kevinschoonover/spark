@@ -1,5 +1,5 @@
 ---
 dependencies:
-  - { role: x }
+  - { role: wayland }
   - { role: fonts }
   - { role: firejail }
