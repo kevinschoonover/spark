@@ -87,13 +87,10 @@ filesystem_packages:
     - exfat-utils
 
 browser_choices:
-    - firefox -P default
-    - firefox -P work
-    - firewarden chromium
-    - firewarden -c qutebrowser
-    - tor-browser-en
-    - play
-    - qcode
+    - firefox-developer-edition
+    - firefox-developer-edition -P default
+    - firefox-developer-edition -P work
+    - google-chome-unstable
     - "| xclip -selection c"
 
 passwordless_sudo:
