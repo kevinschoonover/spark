@@ -35,6 +35,48 @@
   become: yes
   become_user: "{{ user.name }}"
 
+- name: Install ofono/phonesim for handsfree (HSF) only support
+  aur:
+    name:
+      - ofono
+      - phonesim
+    user: "{{ user.name }}"
+  tags:
+    - aur
+
+- name: Enable and start the ofono service
+  service:
+    name: ofono.service
+    enabled: yes
+    state: started
+  notify:
+    - restart pulse as user
+
+
+- name: Push phonesim config
+  copy:
+    src: phonesim.conf
+    dest: /etc/ofono/phonesim.conf
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: Push phonesim service definition
+  copy:
+    src: phonesim.service
+    dest: /etc/systemd/system/phonesim.service
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: Enable and start the phonesim service
+  service:
+    name: bluetooth.service
+    enabled: yes
+    state: started
+
 - name: Unblock the bluetooth service
   service: name="rfkill-block@bluetooth.service" enabled=no state=stopped
   when: bluetooth.disable == False

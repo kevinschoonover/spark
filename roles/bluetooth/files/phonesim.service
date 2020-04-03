@@ -1,0 +1,12 @@
+[Unit]
+Description=Phonesim modem emulator for ofono
+After=ofono.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+ExecStart=/usr/bin/phonesim -p 12345 /usr/share/phonesim/default.xml
+ExecStartPost=/bin/sleep 1
+ExecStartPost=dbus-send --print-reply --system --dest=org.ofono /phonesim org.ofono.Modem.SetProperty string:"Powered" variant:boolean:"true"
+ExecStartPost=dbus-send --print-reply --system --dest=org.ofono /phonesim org.ofono.Modem.SetProperty string:"Online" variant:boolean:"true"
