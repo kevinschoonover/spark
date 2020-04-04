@@ -18,6 +18,10 @@
   tags:
     - aur
 
+- name: Install bemenu
+  pacman:
+    name: bemenu
+
 - name: Insert/Update starting "sway" in .bashrc
   blockinfile:
     path: /home/{{user.name}}/.bashrc
