@@ -6,9 +6,9 @@
   when: dotfiles is defined
 
 - name: Clone user dotfiles
-  git: 
+  git:
       repo: "{{ dotfiles.url }}"
-      dest: /home/{{ user.name }}/{{ dotfiles.destination }} 
+      dest: /home/{{ user.name }}/{{ dotfiles.destination }}
       accept_hostkey: yes
       update: no
   when: dotfiles is defined
@@ -30,3 +30,4 @@
     - sway
     - tmux
     - waybar
+    - yubikey
