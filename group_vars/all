@@ -279,4 +279,4 @@ hardened:
 kernel_parameters: "quiet consoleblank=60" # kernel_parameters: "quiet consoleblank=60 i915.enable_psr=2"
 
 yubico:
-  install_dir: /var/yubico 
+  install_dir: /etc/yubico 
