@@ -1,0 +1,4 @@
+# For online authentication:
+# auth            sufficient      pam_yubico.so id=55114
+mappings_path: "{{ yubico.install_dir }}/yubikey_mappings"
+pam_str: "auth       sufficient   pam_yubico.so mode=challenge-response chalresp_path={{ yubico.install_dir }} authfile={{ mappings_path }}"

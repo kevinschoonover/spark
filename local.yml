@@ -50,3 +50,9 @@
   vars_prompt:
     - name: user_password
       prompt: "Enter desired user password"
+    - name: overwrite_yubikey_slot_2
+      prompt: "Are you okay with overwriting yubikey slot 2 if it exists [y/N]?"
+      private: no
+    - name: yubikey_otp
+      prompt: "Please press the yubikey OTP button"
+      private: yes

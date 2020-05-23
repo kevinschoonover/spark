@@ -2,10 +2,10 @@
 - name: Install YubiKey Manager + Yubikey PAM module
   pacman:
     name:
+      - yubikey-manager
       - yubikey-manager-qt
       - yubico-pam
     state: present
-
 
 - name: Install libu2f-host for browser u2f
   pacman:
@@ -20,17 +20,85 @@
       - ccid
     state: present
 
+- name: Enable the pcscd service for reading yubikey
+  service:
+    name: pcscd
+    state: started
+    enabled: yes
+
+- name: "Create {{ yubico.install_dir }} directory for storing challenge/authorized_keys"
+  file:
+    path: "{{ yubico.install_dir }}"
+    owner: root
+    group: root
+    mode: "777"
+    recurse: true
+    state: directory
+
+- name: Create yubikey mappings file for default user
+  file:
+    path: "{{ mappings_path }}"
+    owner: root
+    group: root
+    mode: "600"
+    state: touch
+
+- name: Fail if yubikey did not emit the OTP value
+  fail:
+    msg: The yubikey was not properly pressed at the beginning
+  when: yubikey_otp == "" or yubikey_otp is not defined or (yubikey_otp | length < 13)
+
+- name: Waiting 10 seconds for user to insert ONLY ONE yubikey with OTP capability (please only insert one)
+  command: ykman list --serials
+  register: list_yubikeys
+  until: list_yubikeys.stdout_lines is defined and (list_yubikeys.stdout_lines | length == 1)
+  retries: 10
+  delay: 1
+  ignore_errors: yes
+  changed_when: false
+
+- name: Running info on the yubikey
+  command: ykman otp info
+  register: yubikey_info
+
+- name: Writing challenge response configuration to slot 2 in yubikey
+  command: ykman otp chalresp --generate 2 -g -f
+  when: (overwrite_yubikey_slot_2 | bool) or yubikey_info.stdout_lines[1].find('programmed') == -1
+  register: yubikey_chalresp
+
+- name: Generate challenge response for yubikey
+  command: ykpamcfg -2 -p "{{ yubico.install_dir }}/"
+  when: yubikey_chalresp.changed == True
+  become: yes
+  become_user: "{{ user.name }}"
+
+- name: "Update {{ yubico.install_dir }} directory permissions"
+  file:
+    path: "{{ yubico.install_dir }}"
+    owner: root
+    group: root
+    mode: "600"
+    recurse: true
+    state: directory
+
+- name: "Add mapping for inserted yubikey"
+  lineinfile:
+    path: "{{ mappings_path }}"
+    line: "{{ user.name }}:{{ yubikey_otp[:13] }}"
+    regexp: "^{{ user.name }}:.*"
+
 - name: Allow passwordless sudo if Yubikey is inserted
   lineinfile:
     path: /etc/pam.d/sudo
-    line: "auth            sufficient      pam_yubico.so id=55114"
+    line: "{{ pam_str }}"
+    regexp: "^auth.*pam_yubico.so.*"
     insertbefore: BOF
   become: yes
-
 
 - name: Allow passwordless login if Yubikey is inserted
   lineinfile:
     path: /etc/pam.d/login
-    line: "auth            sufficient      pam_yubico.so id=55114"
+    line: "{{ pam_str }}"
+    regexp: "^auth.*pam_yubico.so.*"
     insertbefore: BOF
   become: yes
