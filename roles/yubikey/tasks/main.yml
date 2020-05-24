@@ -102,3 +102,9 @@
     regexp: "^auth.*pam_yubico.so.*"
     insertbefore: BOF
   become: yes
+
+- name: "Allow browser to access u2f via firejail"
+  lineinfile:
+    path: "/etc/firejail/firejail.config"
+    line: "browser-disable-u2f no"
+    regexp: "^.browser-distable-u2f.*"
