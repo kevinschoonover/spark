@@ -9,6 +9,14 @@
       - yarn
     state: present
 
+- name: Install terraform lsp
+  aur:
+    name:
+      - terraform-lsp
+    user: "{{ user.name }}"
+  tags:
+    - aur
+
 - name: Install python linters + helpers
   pip:
     name:
