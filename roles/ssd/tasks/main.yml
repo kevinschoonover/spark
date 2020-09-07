@@ -5,7 +5,7 @@
     state: present
 
 - name: Check for TRIM support
-  shell: "hdparm -I /dev/nvme0n1 | grep TRIM"
+  shell: "hdparm -I /dev/{{ ssd.name }}| grep TRIM"
   register: hdparm
   ignore_errors: True
 

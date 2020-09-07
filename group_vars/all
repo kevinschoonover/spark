@@ -17,7 +17,7 @@ interception:
         delay: 20000
 
 dotfiles:
-    url: git@github.com:kevinschoonover/dotfiles.git
+    url: https://github.com/kevinschoonover/dotfiles.git
     destination: git-local/personal/dotfiles
 
 aur:
@@ -25,6 +25,12 @@ aur:
     packages:
         - yay
 
+ssd:
+  name: nvme1n1
+
+libvirt:
+  enable: False
+        
 ssh:
     port: 22
 #    user_key: /root/id_rsa
@@ -58,7 +64,8 @@ editors:
     - code
 
 video_drivers:
-    - libva-intel-driver
+    - mesa
+    - xf86-video-nouveau
 
 base_packages:
     - base-devel
@@ -229,7 +236,7 @@ display_server: wayland
 
 desktop_environment: sway
 
-network_manager: wicd
+network_manager: networkmanager
 
 base_fonts:
     - adobe-source-code-pro-fonts
@@ -238,6 +245,7 @@ base_fonts:
     - noto-fonts
     - terminus-font
     - tex-gyre-fonts
+    - ttf-font-awesome
     - ttf-caladea
     - ttf-carlito
     - ttf-dejavu
@@ -250,15 +258,7 @@ base_fonts:
     - ttf-ubuntu-font-family
 
 aur_fonts:
-    - ttf-bitstream-charter
-    - ttf-cooper-hewitt
-    - ttf-courier-prime
-    - ttf-heuristica
-    - ttf-merriweather
-    - ttf-merriweather-sans
     - ttf-oswald
-    - ttf-quintessential
-    - ttf-signika
 
 syncthing:
     run_on: trusted

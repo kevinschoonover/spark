@@ -4,6 +4,26 @@
     name: gnupg
     state: present
 
+- name: Ensure gnupg skeleton dir exists
+  file:
+    path: /etc/skel/.gnupg
+    state: directory
+
+- name: Push dirmngr configuration file
+  copy: 
+    src: dirmngr.conf 
+    dest: /etc/skel/.gnupg/dirmngr.conf
+  notify:
+    - restart dirmngr
+
+- name: "Create .gnupg directory for root and {{ user.name }}"
+  command: "addgnupghome root {{ user.name }}"
+
+- name: "Push dirmngr configuration file to {{ user.name }}"
+  copy: 
+    src: dirmngr.conf 
+    dest: "/home/{{ user.name }}/.gnupg/dirmngr.conf"
+
 - name: Enable gpg-agent.socket
   systemd:
     name: gpg-agent.socket

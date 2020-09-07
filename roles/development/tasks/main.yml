@@ -7,6 +7,13 @@
     name:
       - nodejs
       - yarn
+      - npm
+    state: present
+
+- name: Install pip
+  pacman:
+    name:
+      - python-pip 
     state: present
 
 - name: Install terraform lsp

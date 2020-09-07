@@ -59,7 +59,6 @@
     - zathura
     - firejail
 
-
 - name: Install pdfgrep
   pacman:
     name: pdfgrep

@@ -68,7 +68,6 @@
 
 - name: Generate challenge response for yubikey
   command: ykpamcfg -2 -p "{{ yubico.install_dir }}/"
-  when: yubikey_chalresp.changed == True
   become: yes
   become_user: "{{ user.name }}"
 

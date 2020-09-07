@@ -12,15 +12,14 @@
     state: present
 
 - name: Install waybar
-  aur:
+  pacman:
     name: waybar
-    user: "{{ user.name }}"
-  tags:
-    - aur
 
 - name: Install bemenu
   pacman:
-    name: bemenu
+    name: 
+      - bemenu
+      - bemenu-wlroots
 
 - name: Insert/Update starting "sway" in .bashrc
   blockinfile:

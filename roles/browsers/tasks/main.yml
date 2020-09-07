@@ -4,71 +4,80 @@
     name: w3m
     state: present
 
-- name: Install Firefox
+- name: Install Firefox Developer Edition
   pacman:
-    name: firefox
+    name:
+      - firefox-developer-edition
     state: present
   tags:
-    - firefox
+    - firefox-developer-edition
 
-- name: Jail Firefox
+- name: Jail Firefox Developer Edition
   file:
     src: /usr/bin/firejail
-    dest: /usr/local/bin/firefox
+    dest: /usr/local/bin/firefox-developer-edition
     state: link
   tags:
-    - firefox
+    - firefox-developer-edition
     - firejail
 
-- name: Verify Firefox firejail local profile exists
+- name: Verify Firefox Developer Edition firejail local profile exists
   file:
-    path: /etc/firejail/firefox.local
+    path: /etc/firejail/firefox-developer-edition.local
     state: touch
   tags:
-    - firefox
+    - firefox-developer-edition
     - firejail
 
-- name: Restrict Firefox access to /etc
+- name: Restrict Firefox Developer Edition access to /etc
   lineinfile:
-    dest: /etc/firejail/firefox.local
+    dest: /etc/firejail/firefox-developer-edition.local
     regexp: "^private-etc"
     line: "private-etc firejail,passwd,group,hostname,hosts,nsswitch.conf,resolv.conf,gtk-2.0,gtk-3.0,fonts,mime.types,asound.conf,pulse,localtime"
   tags:
-    - firefox
+    - firefox-developer-edition
     - firejail
 
-- name: Install Chromium
-  pacman:
-    name: chromium
-    state: present
+- name: Install Chrome Developer Edition
+  aur:
+    name: google-chrome-unstable
+    user: {{ user.name }}
   tags:
-    - chromium
+    - aur
+    - google-chrome-unstable
 
-- name: Jail Chromium
+- name: Jail Chrome Developer Edition
   file:
     src: /usr/bin/firejail
-    dest: /usr/local/bin/chromium
+    dest: /usr/local/bin/google-chrome-unstable
     state: link
   tags:
-    - chromium
+    - google-chrome-unstable
     - firejail
 
-- name: Verify Chromium firejail local profile exists
+- name: Verify Chrome Developer Edition firejail local profile exists
   file:
-    path: /etc/firejail/chromium.local
+    path: /etc/firejail/google-chrome-unstable.local
     state: touch
   tags:
-    - chromium
+    - google-chrome-unstable
     - firejail
 
-- name: Restrict Chromium access to /etc
+- name: Restrict Chome Unstable access to /etc
   lineinfile:
-    dest: /etc/firejail/chromium.local
+    dest: /etc/firejail/google-chrome-unstable.local
     regexp: "^private-etc"
     line: "private-etc firejail,passwd,group,hostname,hosts,nsswitch.conf,resolv.conf,gtk-2.0,gtk-3.0,fonts,mime.types,asound.conf,pulse,localtime"
   tags:
-    - chromium
+    - google-chrome-unstable
     - firejail
+
+- name: Install Pepper Flash
+  pacman:
+    name: pepper-flash
+    state: present
+  tags:
+    - google-chrome-unstable
 
 - name: Install Tor browser
   pacman:

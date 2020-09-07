@@ -1,0 +1,5 @@
+---
+- name: restart dirmngr
+  service: 
+    name: dirmngr.service 
+    state: restarted

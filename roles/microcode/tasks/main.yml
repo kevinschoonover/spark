@@ -1,5 +1,16 @@
 ---
 - name: Install intel microcode
-  pacman: name=intel-ucode state=present
+  pacman: 
+    name: intel-ucode 
+    state: present
+  when: "'GenuineIntel' in ansible_processor"
+  notify:
+    - rebuild grub
+
+- name: Install amd microcode
+  pacman: 
+    name: amd-ucode 
+    state: present
+  when: "'AuthenticAMD' in ansible_processor"
   notify:
     - rebuild grub

@@ -5,7 +5,7 @@
     - { role: base, tags: ['base'] }
     - { role: gnupg, tags: ['gnupg'] }
     - { role: cron, tags: ['cron'] }
-    - { role: microcode, tags: ['microcode'], when: "'GenuineIntel' in ansible_processor" }
+    - { role: microcode, tags: ['microcode'] }
     - { role: hardened, tags: ['hardened'] }
     - { role: ssh, tags: ['ssh'] }
     - { role: dotfiles_stow, tags: ['dotfiles'] }
@@ -17,6 +17,7 @@
     - { role: iptables, tags: ['iptables'] }
     - { role: nettools, tags: ['nettools'] }
     - { role: wicd, tags: ['wicd'], when: "network_manager == 'wicd'" }
+    - { role: networkmanager, tags: ['networkmanager'], when: "network_manager == 'networkmanager'" }
     - { role: ntp, tags: ['ntp'] }
     - { role: firejail, tags: ['firejail'] }
     - { role: unbound, tags: ['unbound'] }
@@ -28,7 +29,7 @@
     - { role: browsers, tags: ['browsers'] }
     - { role: yubikey, tags: ['yubikey'] }
     - { role: media, tags: ['media'] }
-    - { role: laptop, tags: ['laptop'] }
+    # - { role: laptop, tags: ['laptop'] }
     - { role: thinkpad, tags: ['thinkpad'], when: "'ThinkPad' in ansible_product_version" }
     - { role: macbook, tags: ['macbook'], when: "'MacBook' in ansible_product_name" }
     - { role: ledger, tags: ['ledger'] }
