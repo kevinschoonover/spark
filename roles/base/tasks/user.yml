@@ -68,3 +68,21 @@
   notify: stop systemd per-user instance
   tags:
     - user
+
+- name: "Create getty@tty1 override"
+  file:
+    path: /etc/systemd/system/getty@tty1.service.d/
+    state: directory
+    mode: 0755
+  become: true
+  tags:
+    - user
+
+- name: "Set {{ user.name }} as default tty1 username"
+  template:
+    src: override.j2
+    dest: /etc/systemd/system/getty@tty1.service.d/override.conf
+    mode: 0644
+  become: true
+  tags:
+    - user
